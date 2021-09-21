@@ -1,0 +1,10 @@
+select user_name
+from (
+select *,
+case when login_date = lead(login_date) over (order by login_id)
+          and login_date = lead(login_date,2) over (order by login_id)
+          then login_date
+          else NULL
+  END as repeated_time
+from login_details ) x
+where x.repeated_time IS NOT NULL
